@@ -226,3 +226,132 @@ Iterates through time steps at a specified interval (skipFrames), updating and p
 Video Finalization and Notification
 Closes the video file and notifies the user that the animation has been saved, providing a tangible output from the simulation.
 
+
+spatialmode_numeric.m
+
+This code is designed to analyze the deflection of a beam under a given load, specifically focusing on the spatial mode of vibration and utilizing both numerical and symbolic approaches to solve for the beam's deflection profile. It is structured for MATLAB and employs several key features of the language, including function definition, numerical methods, and symbolic computation. Here's a breakdown of its components:
+
+Beam Properties
+The script starts by defining physical properties of the beam, such as its length (L), cross-section dimensions (a), moment of inertia (I), Young's modulus (E), density (rho), and cross-sectional area (A). These properties are used to calculate the beam's flexural rigidity (EI) and are essential inputs for the model that predicts how the beam will behave under load.
+First Mode Approximation
+It approximates the first mode of vibration for a clamped-free beam using a predefined constant (k1). This value is used to calculate the natural frequency (omega_1) of the beam's first mode of vibration, which is crucial for understanding how the beam will deform dynamically.
+Boundary Value Problem (BVP) Solution
+The code sets up and solves a boundary value problem (BVP) to find the beam deflection under a given load. This involves defining a mesh of points along the length of the beam (xmesh), an initial guess for the solution (solinit), and then using MATLAB's bvp4c function to solve the BVP. The differential equations (beamODE) and boundary conditions (beamBC) defined in separate functions are passed as arguments to bvp4c.
+
+beamODE: Defines the ordinary differential equation (ODE) representing the beam's behavior.
+beamBC: Specifies the boundary conditions at the ends of the beam, incorporating the effect of a tip payload (P).
+Plotting the Numerical Solution
+After solving the BVP, the script plots the numerical solution for the beam deflection (phi(x)) across its length. This visualization helps in understanding the physical deformation of the beam under the specified conditions.
+Symbolic Solution and Plotting
+In addition to the numerical solution, the script also includes a symbolic solution for the beam's deflection, represented by a complex mathematical expression (phiSol1). This solution is converted into a MATLAB function (phiSol1_numeric) and evaluated over a range of x values.
+The symbolic solution is then plotted, providing a different perspective on the beam's deflection. This approach can offer more insight into the mathematical properties of the solution and is useful for analytical purposes.
+Functions beamODE and beamBC
+beamODE: This function models the differential equation governing the beam's deflection. It takes the position along the beam (x), current state (y), and other parameters like the angular frequency (omega), density (rho), cross-sectional area (A), and flexural rigidity (EI) to compute the rate of change of the state vector.
+beamBC: Implements the boundary conditions for the beam, incorporating the effect of a tip payload. It ensures that the solution satisfies physical constraints at both ends of the beam.
+Conclusion
+This script is a comprehensive example of how to apply both numerical and symbolic techniques to solve engineering problems in MATLAB. It demonstrates the use of differential equations to model physical systems, the solving of boundary value problems, and the visualization of solutions to gain insights into the system's behavior.
+
+spatialmode_symbolic.m
+
+The continuation of the code snippet focuses on the symbolic analysis of a beam subjected to a tip load, employing MATLAB's symbolic computation capabilities. Here's a breakdown of what this segment does:
+
+Define Symbolic Variables and Equation
+This part defines symbolic variables for the deflection phi(x) and the angular frequency omega. It then specifies the beam's governing differential equation in terms of these variables, incorporating the beam's flexural rigidity (EI), density (rho), and cross-sectional area (A). The equation reflects the beam's behavior under bending and is a fourth-order differential equation representing the relationship between the beam's deflection and the applied load.
+Boundary Conditions
+Symbolically defines the boundary conditions for the beam:
+phi(0) == 0: The deflection at the base of the beam is zero (clamped end).
+subs(diff(phi, x), x, 0) == 0: The slope of the beam at the base is zero, indicating no initial tilt.
+subs(diff(phi, x, 2), x, L) == P*L/EI: The moment at the beam's free end is proportional to the applied load (P), its lever arm (L), and inversely proportional to the beam's flexural rigidity.
+subs(diff(phi, x, 3), x, L) == 0: The shear force at the free end of the beam is zero.
+Solve the Differential Equation
+Attempts to solve the differential equation given the specified boundary conditions using MATLAB's dsolve function. The solution phiSol(x) represents the beam's deflection as a function of position along its length.
+Calculate First Mode Shape
+Calculates the first mode of vibration's approximated root (k1) and substitutes it into the angular frequency omega to get omega_1. This value is used to find the specific solution phiSol1 for the first mode by substituting omega_1 into phiSol.
+The solution phiSol1 is then converted into a MATLAB function handle (phiSol1_func) for numerical evaluation and plotting.
+Plotting
+Generates a range of x values along the length of the beam and evaluates the symbolic solution phiSol1 at these points.
+Plots the evaluated solution, showing the mode shape of the beam for the first approximated root. The plot visualizes how the beam's deflection varies along its length, providing insights into its bending behavior under the applied conditions.
+Conclusion
+This part of the code demonstrates the use of MATLAB's symbolic toolbox for solving and analyzing differential equations that model physical systems, specifically the bending of beams under load. By solving the beam equation symbolically and applying boundary conditions, it finds an expression for the beam's deflection and visualizes the first mode shape. This approach is valuable for understanding complex mechanical behaviors without resorting to numerical approximation methods.
+
+spatialmode_symbolic_inverse.m
+
+This continuation of the code snippet dives deeper into the analysis of the beam's response, particularly focusing on adjusting boundary conditions for a clamped-free beam with a tip payload, solving for mode shapes, and addressing normalization for comparison with real-world measurements.
+
+Adjusted Boundary Conditions and Coefficients
+
+It introduces adjusted boundary conditions to account for the clamped-free beam's response to a tip payload. The calculation uses a matrix formulation to represent these conditions and solves for coefficients. 
+The pinv function is used to calculate the pseudo-inverse of the matrix 
+f to solve for the coefficients. This approach allows for the determination of the beam's response under specific boundary conditions and loadings.
+Symbolic Mode Shape Representation
+The code snippet then defines a symbolic expression for the second mode shape of the beam, phi2, using a highly complex mathematical expression derived from the coefficients and boundary conditions previously established. This expression captures the detailed behavior of the beam's deflection along its length.
+The symbolic mode shape is then converted into a numeric function phi2_func for evaluation and plotting purposes.
+Normalization and Plotting
+The calculated mode shape is normalized using a real tip displacement value (real tip displacement) to ensure the model's predictions align with observed physical phenomena. This normalization factor (cf) scales the computed deflection to match real-world measurements.
+The script plots the normalized second mode shape across the beam's length, providing a visual representation of how the beam deflects under the given conditions.
+Additional Calculations
+The script also performs calculations to assess the beam's curvature (D2phi2a) and deflection (phi2a, phi2L) at specific points along its length, particularly at the midpoint and the tip. These values can provide further insights into the beam's behavior and structural integrity under load.
+This advanced segment of the code demonstrates a comprehensive approach to modeling and analyzing the deflection of a clamped-free beam under a tip load using MATLAB's symbolic computation capabilities. By adjusting boundary conditions, solving for mode shapes, and employing normalization, the analysis provides a deep understanding of the beam's structural response. This method can be particularly useful in fields such as mechanical engineering, structural analysis, and materials science, where accurate modeling of physical systems is crucial for design and analysis.
+
+flexiblelink_lagrange.m
+
+This segment of the code advances into the realm of dynamic systems and control, focusing on a system that might involve a motor (represented by the angle q1(t)) and the deformation of a beam in its second mode (q2(t)). It leverages MATLAB's Symbolic Math Toolbox to derive the equations of motion using the Euler-Lagrange equation, a fundamental principle in the dynamics of mechanical systems. Here's a breakdown:
+Symbolic Variables and Functions
+The script defines symbolic functions representing the motor angle and the deformation of the beam in its second mode, respectively. Additionally, symbolic constants such as the inertias (Ih,Ib), density (ρ), angular frequency of the second mode (ω2), a normalization factor (γ2), and the torque (τ) are declared.
+Derivatives and Lagrangian Formulation
+Derivatives with respect to time (t) are computed, necessary for formulating the Lagrangian (L) of the system. The Lagrangian is defined as the difference between the kinetic and potential energies of the system, incorporating both the motor and the beam's second mode dynamics.
+Euler-Lagrange Equations
+The Euler-Lagrange (EL) equations are derived from the Lagrangian for both q1 and q2, representing the fundamental equations of motion for the system. These equations are obtained by taking the derivative of the Lagrangian with respect to the function and its time derivative, then setting the difference of these derivatives equal to the external force/torque applied to the system (τ in this case).
+For  q1: The EL equation considers the inertia of the motor and beam and the coupling between the motor's angular motion and the beam's deformation.
+For q2: It focuses on the dynamics of the beam's deformation, considering its natural frequency and the effect of coupling with the motor's motion.
+This approach demonstrates a sophisticated method for modeling the dynamics of a coupled system consisting of a motor and a beam in vibration. By utilizing the symbolic computation capabilities of MATLAB, the script efficiently derives the equations of motion that govern the system's behavior. These equations are essential for understanding the system's dynamics and can be used for further analysis, such as stability assessment, control strategy development, or simulation of the system's response to external inputs.
+In practical applications, these derived equations of motion could inform the design and control of mechanical systems where precise movement and vibration control are critical, such as in robotics, aerospace structures, or precision manufacturing equipment.
+
+flexiblelinksim.m
+
+The provided code is a MATLAB script designed for simulating and analyzing the dynamic behavior of a system represented by two linked variables, q1 and q2, under certain conditions. It employs ordinary differential equations (ODEs) to model the system's motion and uses MATLAB's ODE solver ode45 for numerical integration. Here's a breakdown of its components and functionality:
+
+Constants
+I_h: Moment of inertia, a physical quantity expressing an object's tendency to resist angular acceleration.
+rho: Density or a specific parameter related to the system that influences its dynamics.
+omega: Natural frequency of q2, indicating how q2 oscillates in the absence of damping or external forces.
+gamma: Damping factor, a coefficient that describes the rate at which the system's motion is attenuated due to resistive forces.
+Initial Conditions
+q0: A vector specifying initial conditions for q1, q1dot (velocity of q1), q2, and q2dot (velocity of q2). It sets the starting point of the simulation.
+Time Span
+tspan: Defines the duration of the simulation, from 0 to 1 second.
+Solver Configuration
+An options set for the ODE solver (odeset) is defined to control the maximum step size during numerical integration, enhancing stability.
+ODE Solver
+The ode45 function is used to solve the system of differential equations defined in the stateSpace function over the specified time span. It computes the system's states (x) at various time points (t) based on the initial conditions and the equations governing the system's dynamics.
+Plotting
+The script generates a series of plots to visualize the positions (q1, q2) and velocities (q1dot, q2dot) of the system components over time, facilitating analysis of their behavior under the simulated conditions.
+stateSpace Function
+This function calculates the derivatives of the system's state variables (dxdt) at any given time (t), based on the current state (x), system constants (I_h, rho, omega, gamma), and a control input (tau). tau is modeled as a smoothly transitioning function using a sigmoid curve, which represents an external force or torque applied to the system. The equations for q1ddot and q2ddot represent the accelerations of q1 and q2, respectively, derived from the system's dynamics and the control input.
+
+In summary, this MATLAB script is a tool for simulating the dynamics of a system with two degrees of freedom, taking into account factors like inertia, damping, and external control inputs. It provides insights into how the system responds over time to a smoothly varying external force, with applications potentially in fields such as mechanical engineering, robotics, or any area involving the dynamic analysis of linked systems.
+
+flexiblelinksimulation.slx is the Simulink version, load the flexiblelinkparams.m file before run the simulation. 
+
+rotatingflexiblebeammovingmass_symbolic.m
+
+The provided MATLAB code snippet is an advanced example of applying symbolic computation for deriving the equations of motion of a mechanical system, specifically optimized for a beam and a particle system. This snippet demonstrates the use of MATLAB's Symbolic Math Toolbox for precomputing, optimizing mathematical expressions, and efficiently deriving equations of motion using the Lagrangian dynamics approach. Here's a detailed explanation:
+
+Variable Definitions
+Symbolic variables (syms) for the system's states and parameters are defined, including positions, velocities, accelerations, geometrical and material properties, and external forces.
+Precomputation for Optimization
+Expressions involving the ratio of a variable x and u to the beam length L are precomputed to avoid redundant calculations during the derivation of the system's dynamics. This step significantly improves computational efficiency.
+Shape Functions for Beam Element
+Optimized shape functions N1 and N2 are defined for the beam element based on the beam's geometry. These functions are critical for finite element analysis, representing how different points of the beam deform under loads.
+Stiffness and Mass Matrices
+The stiffness matrix Kf of the beam is defined, which relates to the beam's resistance to deformation. It's crucial for understanding the beam's structural behavior.
+The elastic mass matrix Mf and mass coupling term Mrf are computed. These matrices represent the distribution of mass within the beam and its influence on the system's dynamics.
+Kinetic and Potential Energy
+The kinetic energy T and potential energy V of the system are calculated, incorporating contributions from both the beam and the particle. These energies are essential for formulating the system's Lagrangian, which is the difference between the kinetic and potential energies.
+Lagrangian Dynamics
+The Lagrangian Lag is formulated, and from it, the equations of motion are derived using the principle of least action. This involves taking derivatives of the Lagrangian with respect to the system's state variables and their derivatives, then simplifying the resulting expressions.
+Equations of Motion
+The script efficiently groups similar derivative operations to optimize the derivation of the equations of motion. It calculates the left-hand side (LHS) of the equations of motion for each state variable (q1, q2, u, th), which represent the dynamics of the system.
+Display
+Finally, the optimized equations of motion for each variable are displayed. These equations are essential for understanding how the system behaves over time, especially under various external forces and moments.
+This code is a sophisticated example of utilizing symbolic computation for mechanical system analysis. It highlights the power of MATLAB for handling complex mathematical operations, optimizing calculations, and providing insights into the dynamics of mechanical systems, which can be invaluable in fields such as structural engineering, robotics, and physics.
