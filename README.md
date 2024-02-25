@@ -355,3 +355,48 @@ The script efficiently groups similar derivative operations to optimize the deri
 Display
 Finally, the optimized equations of motion for each variable are displayed. These equations are essential for understanding how the system behaves over time, especially under various external forces and moments.
 This code is a sophisticated example of utilizing symbolic computation for mechanical system analysis. It highlights the power of MATLAB for handling complex mathematical operations, optimizing calculations, and providing insights into the dynamics of mechanical systems, which can be invaluable in fields such as structural engineering, robotics, and physics.
+
+acrobot_zerodynamics.m
+
+The provided MATLAB script is a comprehensive analysis tool for the dynamics and zero-dynamics analysis of an acrobot system. An acrobot is a planar robot with two links connected by an actuated joint, resembling a simplified version of a gymnast swinging on a high bar. This script employs symbolic mathematics, dynamic system simulation, and linearization techniques to model, simulate, and analyze the system's behavior. Here's a breakdown of the key components and steps in the script:
+
+Symbolic Variable Definition
+The script starts by defining symbolic variables for the angles (theta1, theta2), torque (tau), mass (m1, m2), length (l1, l2) of the links, and gravitational acceleration (g). These variables are used to describe the physical properties and states of the acrobot system.
+Derivatives
+It calculates the derivatives of theta1 and theta2 with respect to time (t), which are needed for dynamic analysis.
+Kinetic and Potential Energy
+The kinetic (T) and potential (V) energies of the system are defined using the physical parameters and state variables. These energies are crucial for formulating the Lagrangian, which represents the difference between kinetic and potential energy.
+Lagrangian Mechanics
+The script employs Lagrangian mechanics to derive the equations of motion. This involves the calculation of the Lagrangian (L = T - V) and applying the Euler-Lagrange equations to find the dynamic equations. However, the actual execution of deriving equations of motion using Euler-Lagrange equations is commented out, indicating it might have been done manually or in another part of the script.
+System Parameters
+Specific values for the mass, length of links, and gravitational acceleration are assigned, transitioning from symbolic representation to a numerical setup ready for simulation.
+Equations of Motion
+The equations of motion are explicitly defined using the system parameters, allowing for the calculation of the second derivatives of theta1 and theta2 (ddth1, ddth2), which represent angular accelerations.
+Solving for Angular Accelerations
+The script solves the equations of motion for ddth1 and ddth2 given a torque input (tau), enabling the analysis of how the system responds to external forces.
+Defining the ODE Function for Dynamics Simulation
+A function handle (odeFun) for the system's differential equations is created, integrating the defined dynamics with respect to a step input for torque. This function is suitable for numerical ODE solvers in MATLAB.
+Simulation
+The script simulates the full system dynamics using ode45, a MATLAB function for solving ordinary differential equations, with specified initial conditions and a time span.
+Plotting
+It visualizes the dynamics of theta1 and theta2 over time, offering insights into the system's behavior under the defined conditions.
+Linearization
+The system is linearized around the equilibrium point (assumed to be the upright position), which simplifies the analysis of system stability and control design. This involves calculating Jacobian matrices A and B for the system dynamics and input, respectively.
+State-Space Model and Simulation
+A state-space model is created from the linearized system, and the response to a step input in torque is simulated and plotted. This analysis is crucial for understanding the system's behavior in a linearized context, which is easier to control and analyze compared to the nonlinear dynamics.
+Overall, this MATLAB script is a thorough tool for studying the dynamics of an acrobot system, from symbolic derivation of equations of motion to numerical simulation and linearization for control purposes. It exemplifies a systematic approach to modeling, simulation, and analysis that is critical in robotics and control engineering.
+
+For the Simulink simulation 'acrobot_zerodynamics_simulink_control.slx', first run the 'acrobot_parameters.m'file. 
+
+
+
+
+
+
+
+
+
+
+
+
+
