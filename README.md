@@ -1,31 +1,34 @@
-# Flexible Link Manipulators: Modelling and Control
-Overview
-This repository is dedicated to the exploration and implementation of advanced control strategies for two critical areas of robotics and control engineering: Flexible Link Manipulator Modeling (also in a rotating reference frame), and Control. 
-With a focus on adaptive, robust, and intelligent control methods, our goal is to push the boundaries of what's possible in the precision and adaptability of these complex systems. 
-Utilizing MATLAB, this project covers comprehensive modeling, simulation, and control strategies designed to tackle the unique challenges presented by the flexibility and dynamics of these systems.
-Flexible Link Manipulators
-Flexible Link Manipulators (FLMs) represent a significant area of research in robotics, where the flexibility of the manipulator links is considered in the design of control systems. These systems pose unique challenges due to their inherent non-linear dynamics and the presence of significant vibrations and deflections during operation.
-In addition, the control of rotating beams involves managing the dynamics of beams under rotational motion, a common scenario in aerospace and mechanical engineering applications. 
-This repository includes:
-•	Modeling Techniques: Detailed MATLAB scripts and Simulink models capturing the complex dynamics of FLMs, including Lagrangian and Finite Element Methods for accurate physical representations.
-•	Control Strategies: Implementation of adaptive, robust, and intelligent control algorithms to address the precision and stability challenges in FLM operations. Techniques include but are not limited to PID, Sliding Mode Control, and Neural Network-based controllers.
-•	Dynamic Modeling: Development of mathematical models that accurately represent the behavior of rotating beams, considering factors like centrifugal stiffening and gyroscopic effects.
-•	Advanced Control Methods: Application of state-of-the-art control techniques to ensure stability and performance under varying operational conditions. This includes adaptive control to automatically adjust to changing dynamics and robust control to maintain performance under uncertainty.
-Control Methods
-Our work emphasizes the development and implementation of various control methodologies tailored to the specific needs of FLMs and rotating beams:
-•	Adaptive Control: Dynamically adjusting controller parameters in real-time for optimal performance.
-•	Robust Control: Ensuring system stability and performance despite model uncertainties and external disturbances.
-•	Intelligent Control: Leveraging artificial intelligence (AI) and machine learning (ML) techniques for predictive modeling and control, enhancing the system's ability to deal with complex, nonlinear dynamics efficiently.
-Getting Started
-This repository provides MATLAB code, Simulink models, and detailed documentation for each project. Whether you're a student, researcher, or industry professional, you'll find valuable resources here to advance your work in control engineering.
-•	Prerequisites: MATLAB (with Control System Toolbox and Simulink), basic understanding of control theory and dynamics.
-•	Installation: Clone this repository and follow the setup instructions in each project folder to get started.
-Contributing
-We welcome contributions from the community! Whether it's adding new control strategies, enhancing the models, or improving the documentation, your input is valuable.
-License
-This project is licensed under the CC BY 4.0. 
+# Flexible-Link Manipulators: Modelling and Control
 
-flexiblelink_analytical.m
+**DeepDynaSim collection | Flexible robotics and rotating structures | MATLAB / Simulink**
+
+Study how link flexibility, beam vibration and nonlinear dynamics affect robotic motion. This repository contains analytical, boundary-value, finite-difference and symbolic examples, alongside flexible-link and acrobot Simulink models.
+
+## Start here
+
+| Goal | Resource |
+| --- | --- |
+| Read the technical guides | [Part I](Flexible%20Link%20Manipulators_Modelling%20and%20Control_Part%20I.pdf), [Part II](Flexible%20Link%20Manipulators_Modelling%20and%20Control_Part%20II.pdf), [Part III](Flexible%20Link%20Manipulators_Modelling%20and%20Control_Part%20III.pdf) |
+| Compare beam formulations | [analytical](flexiblelink_analytical.m), [boundary-value](flexiblelink_BVP.m), [finite differences](flexiblelinkvibration_FDM.m) |
+| Explore modes and dynamics | [flexiblelinkmodes.m](flexiblelinkmodes.m), [flexiblelinksim.m](flexiblelinksim.m) |
+| Prepare the flexible-link model | [flexiblelinkparams.m](flexiblelinkparams.m), [flexiblelinksimulation.slx](flexiblelinksimulation.slx) |
+| Prepare the acrobot model | [acrobot_parameters.m](acrobot_parameters.m), [control model](acrobot_zerodynamics_simulink_control.slx) |
+
+## Getting started
+
+Use the repository root as the MATLAB current folder. Symbolic examples need Symbolic Math Toolbox; Simulink models need Simulink and the toolboxes used by their blocks. Read each file and guide for its assumptions and parameters.
+
+```matlab
+addpath(pwd);
+flexiblelinkparams;
+open_system("flexiblelinksimulation.slx");
+```
+
+For the acrobot control model, run `acrobot_parameters` before opening `acrobot_zerodynamics_simulink_control.slx`. These are research and teaching examples; controller performance depends on the selected model and parameters. Licensing follows the repository [LICENSE](LICENSE), identified by GitHub as CC0-1.0.
+
+## Detailed notes
+
+### `flexiblelink_analytical.m`
 
 This MATLAB script is an analytical tool designed to investigate the mode shapes of a clamped-free beam subjected to an applied moment at the free end, leveraging the principles of Euler-Bernoulli beam theory. The script makes use of MATLAB's symbolic computation capabilities, allowing for the derivation and solution of the beam's differential equation under specific boundary conditions. Here's a detailed explanation tailored for both students and experts in the field:
 
@@ -86,7 +89,7 @@ For Students: This script is a practical demonstration of applying theoretical k
 
 For Experts: This code exemplifies the power of symbolic computation in MATLAB for solving complex differential equations arising in structural dynamics and mechanical engineering. By seamlessly integrating theoretical formulations with computational algorithms, it offers a robust framework for exploring the vibrational characteristics of beams and other structural elements. The methodology outlined here can be extended to more complex systems and loading conditions, providing a foundation for advanced research and development in the field of structural analysis and design.
 
-flexiblelink_BVP.m
+### `flexiblelink_BVP.m`
 
 The provided MATLAB code defines a function named flexiblelink_BVP that solves a boundary value problem (BVP) for a clamped-free beam subjected to an applied moment at the free end. This problem is typical in structural mechanics, illustrating the deflection of beams under certain loading conditions. The solution is achieved through MATLAB's built-in boundary value problem solver bvp4c. Let's dissect the code for both students and experts in the field.
 
@@ -132,7 +135,7 @@ figure;
 plot(x, y(1,:), 'LineWidth', 2);
 Finally, the deflection of the beam is plotted along its length. The deval function evaluates the solution at points specified by x, and the first row of y (y(1,:))—representing the beam's deflection—is plotted.
 
-flexiblelinkmodes.m
+### `flexiblelinkmodes.m`
 
 This MATLAB script calculates and visualizes the modal frequencies of a clamped-free beam with a square cross-section, made of aluminum, using the characteristic equation method. It's a great example of applying theoretical concepts from vibrations and structural dynamics in a computational environment. Let's break down the code for clarity for both students and experts in the field.
 
@@ -188,7 +191,7 @@ Copy code
 plot(k, f, 'o-', 'Color', 'blue', 'MarkerSize', 8, 'LineWidth', 2);
 Finally, a plot of modal frequencies against wave numbers provides a visual representation of the relationship between these quantities.
 
-flexiblelinkvibration_FDM.m
+### `flexiblelinkvibration_FDM.m`
 
 This MATLAB script simulates the vibration of a clamped-free beam with an applied tip load and boundary disturbance using the Finite Difference Method (FDM). It includes the dynamic visualization of the beam's displacement over time and records this animation as a video. Let's unpack the script for a comprehensive understanding tailored to both students and experts.
 
@@ -227,7 +230,7 @@ Video Finalization and Notification
 Closes the video file and notifies the user that the animation has been saved, providing a tangible output from the simulation.
 
 
-spatialmode_numeric.m
+### `spatialmode_numeric.m`
 
 This code is designed to analyze the deflection of a beam under a given load, specifically focusing on the spatial mode of vibration and utilizing both numerical and symbolic approaches to solve for the beam's deflection profile. It is structured for MATLAB and employs several key features of the language, including function definition, numerical methods, and symbolic computation. Here's a breakdown of its components:
 
@@ -251,7 +254,7 @@ beamBC: Implements the boundary conditions for the beam, incorporating the effec
 Conclusion
 This script is a comprehensive example of how to apply both numerical and symbolic techniques to solve engineering problems in MATLAB. It demonstrates the use of differential equations to model physical systems, the solving of boundary value problems, and the visualization of solutions to gain insights into the system's behavior.
 
-spatialmode_symbolic.m
+### `spatialmode_symbolic.m`
 
 The continuation of the code snippet focuses on the symbolic analysis of a beam subjected to a tip load, employing MATLAB's symbolic computation capabilities. Here's a breakdown of what this segment does:
 
@@ -274,7 +277,7 @@ Plots the evaluated solution, showing the mode shape of the beam for the first a
 Conclusion
 This part of the code demonstrates the use of MATLAB's symbolic toolbox for solving and analyzing differential equations that model physical systems, specifically the bending of beams under load. By solving the beam equation symbolically and applying boundary conditions, it finds an expression for the beam's deflection and visualizes the first mode shape. This approach is valuable for understanding complex mechanical behaviors without resorting to numerical approximation methods.
 
-spatialmode_symbolic_inverse.m
+### `spatialmode_symbolic_inverse.m`
 
 This continuation of the code snippet dives deeper into the analysis of the beam's response, particularly focusing on adjusting boundary conditions for a clamped-free beam with a tip payload, solving for mode shapes, and addressing normalization for comparison with real-world measurements.
 
@@ -293,7 +296,7 @@ Additional Calculations
 The script also performs calculations to assess the beam's curvature (D2phi2a) and deflection (phi2a, phi2L) at specific points along its length, particularly at the midpoint and the tip. These values can provide further insights into the beam's behavior and structural integrity under load.
 This advanced segment of the code demonstrates a comprehensive approach to modeling and analyzing the deflection of a clamped-free beam under a tip load using MATLAB's symbolic computation capabilities. By adjusting boundary conditions, solving for mode shapes, and employing normalization, the analysis provides a deep understanding of the beam's structural response. This method can be particularly useful in fields such as mechanical engineering, structural analysis, and materials science, where accurate modeling of physical systems is crucial for design and analysis.
 
-flexiblelink_lagrange.m
+### `flexiblelink_lagrange.m`
 
 This segment of the code advances into the realm of dynamic systems and control, focusing on a system that might involve a motor (represented by the angle q1(t)) and the deformation of a beam in its second mode (q2(t)). It leverages MATLAB's Symbolic Math Toolbox to derive the equations of motion using the Euler-Lagrange equation, a fundamental principle in the dynamics of mechanical systems. Here's a breakdown:
 Symbolic Variables and Functions
@@ -307,7 +310,7 @@ For q2: It focuses on the dynamics of the beam's deformation, considering its na
 This approach demonstrates a sophisticated method for modeling the dynamics of a coupled system consisting of a motor and a beam in vibration. By utilizing the symbolic computation capabilities of MATLAB, the script efficiently derives the equations of motion that govern the system's behavior. These equations are essential for understanding the system's dynamics and can be used for further analysis, such as stability assessment, control strategy development, or simulation of the system's response to external inputs.
 In practical applications, these derived equations of motion could inform the design and control of mechanical systems where precise movement and vibration control are critical, such as in robotics, aerospace structures, or precision manufacturing equipment.
 
-flexiblelinksim.m
+### `flexiblelinksim.m`
 
 The provided code is a MATLAB script designed for simulating and analyzing the dynamic behavior of a system represented by two linked variables, q1 and q2, under certain conditions. It employs ordinary differential equations (ODEs) to model the system's motion and uses MATLAB's ODE solver ode45 for numerical integration. Here's a breakdown of its components and functionality:
 
@@ -333,7 +336,7 @@ In summary, this MATLAB script is a tool for simulating the dynamics of a system
 
 flexiblelinksimulation.slx is the Simulink version, load the flexiblelinkparams.m file before run the simulation. 
 
-rotatingflexiblebeammovingmass_symbolic.m
+### `rotatingflexiblebeammovingmass_symbolic.m`
 
 The provided MATLAB code snippet is an advanced example of applying symbolic computation for deriving the equations of motion of a mechanical system, specifically optimized for a beam and a particle system. This snippet demonstrates the use of MATLAB's Symbolic Math Toolbox for precomputing, optimizing mathematical expressions, and efficiently deriving equations of motion using the Lagrangian dynamics approach. Here's a detailed explanation:
 
@@ -356,7 +359,7 @@ Display
 Finally, the optimized equations of motion for each variable are displayed. These equations are essential for understanding how the system behaves over time, especially under various external forces and moments.
 This code is a sophisticated example of utilizing symbolic computation for mechanical system analysis. It highlights the power of MATLAB for handling complex mathematical operations, optimizing calculations, and providing insights into the dynamics of mechanical systems, which can be invaluable in fields such as structural engineering, robotics, and physics.
 
-acrobot_zerodynamics.m
+### `acrobot_zerodynamics.m`
 
 The provided MATLAB script is a comprehensive analysis tool for the dynamics and zero-dynamics analysis of an acrobot system. An acrobot is a planar robot with two links connected by an actuated joint, resembling a simplified version of a gymnast swinging on a high bar. This script employs symbolic mathematics, dynamic system simulation, and linearization techniques to model, simulate, and analyze the system's behavior. Here's a breakdown of the key components and steps in the script:
 
@@ -400,3 +403,12 @@ For the Simulink simulation 'acrobot_zerodynamics_simulink_control.slx', first r
 
 
 
+
+
+## Related work and collaboration
+
+Explore related repositories: [Active Vibration Control Complete Guide](https://github.com/DeepDynaSim/Active-Vibration-Control-Complete-Guide) · [Complete Kinematic Analysis](https://github.com/DeepDynaSim/Complete-Kinematic-Analysis).
+
+[DeepDynaSim](https://github.com/DeepDynaSim) is an engineering R&D and consulting company in İzmir, Türkiye, focused on physics-guided AI, simulation and control. For engineering collaboration: [support@deepdynasim.com](mailto:support@deepdynasim.com). For repository questions, use [Issues](https://github.com/DeepDynaSim/Flexible-Link-Manipulators-Modelling-and-Control/issues).
+
+Reuse follows the existing [LICENSE](LICENSE); academic authorship and third-party attribution remain with their respective creators.
