@@ -24,6 +24,15 @@ flexiblelinkparams;
 open_system("flexiblelinksimulation.slx");
 ```
 
+Additional dependencies visible in the source are:
+
+| Example | Requirement |
+|---|---|
+| `flexiblelinkmodes.m` (`fsolve`) | Optimization Toolbox |
+| `acrobot_zerodynamics.m` (`syms`, `solve`, `ss`) | Symbolic Math Toolbox and Control System Toolbox |
+| `spatialmode_numeric.m` (`bvp4c` followed by `syms`) | MATLAB boundary-value solver and Symbolic Math Toolbox |
+| `.slx` models | Simulink and any toolboxes required by the selected blocks |
+
 For the acrobot control model, run `acrobot_parameters` before opening `acrobot_zerodynamics_simulink_control.slx`. These are research and teaching examples; controller performance depends on the selected model and parameters. Licensing follows the repository [LICENSE](LICENSE), identified by GitHub as CC0-1.0.
 
 ## Detailed notes
